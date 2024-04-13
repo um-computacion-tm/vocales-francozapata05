@@ -2,12 +2,33 @@ import unittest
 
 #agregar tildes
 
+def quitar_tildes(palabra):
+    
+    dict_tildes = {
+        "á": "a",
+        "é": "e", 
+        "í": "i", 
+        "ó": "o", 
+        "ú": "u"}
+    
+    for letra in palabra:
+
+        if letra in "áéíóú":
+            palabra = palabra.replace(letra, dict_tildes.get(letra))
+    
+    return palabra
+
+
 def contar_vocales(mi_string):
     
     nuevo_string = mi_string.lower()
+    nuevo_string = quitar_tildes(nuevo_string)
+
     resultado = {}
-    
-    for letra in mi_string:
+
+
+    for letra in nuevo_string:
+        
         if letra in 'aeiou':
             if letra not in resultado:
                 resultado[letra] = 0
@@ -38,9 +59,26 @@ class TestContarVocales(unittest.TestCase):
         self.assertEqual(resultado, {'a': 3, 'o': 1})
     
     def test_casAnOva(self):
-        resultado = contar_vocales('casanova')
+        resultado = contar_vocales('casAnOva')
         self.assertEqual(resultado, {'a': 3, 'o': 1})
 
-# agregar mayusculas y minusculas
+    
+    def test_HeLAdO(self):
+        resultado = contar_vocales('HeLAdO')
+        self.assertEqual(resultado, {'e': 1, 'a': 1, 'o': 1})
+
+    def test_última(self):
+        resultado = contar_vocales('última')
+        self.assertEqual(resultado, {'u': 1, 'i': 1, 'a': 1})
+    
+    def test_cAnción(self):
+        resultado = contar_vocales('cAnción')
+        self.assertEqual(resultado, {'a': 1, 'i': 1, 'o': 1})
+    
+
+
 
 unittest.main()
+
+#palabra = str(input("Inserte una palabra: "))
+#print(contar_vocales(palabra))
